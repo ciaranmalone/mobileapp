@@ -1,4 +1,1 @@
-package org.wit.`20079979`.models
-
-class ScoreModel {
-}
+data class ScoreModel(var userName: String ="", var score: Int=0)
