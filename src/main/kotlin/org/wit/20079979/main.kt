@@ -10,12 +10,23 @@ fun main(args: Array<String>){
 
     var input: Int
 
-    input = menu()
+    do {
+        input = menu()
+        when(input) {
+            1 -> println("Playing game")
+            -1 -> println("Bye Bye")
+            else -> println("INVALID")
+        }
+        println()
+    } while (input != -1)
+    logger.info { "SHUTTING DOWN" }
+
 }
 
 fun menu() : Int {
 
     var option : Int
+
     var input: String? = null
 
     println("Main Menu")
