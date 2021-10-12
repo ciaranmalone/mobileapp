@@ -5,7 +5,7 @@ import mu.KotlinLogging
 private val logger = KotlinLogging.logger {}
 
 fun main(args: Array<String>){
-    logger.info { "Launching Game" }
+    logger.info { "!Launching Game!" }
     println("SpinTop v0.1")
 
     var input: Int
