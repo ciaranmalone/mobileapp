@@ -1,5 +1,10 @@
+package org.wit.cm.views
+
+import ScoreModel
+import ScoreboardMemStore
 
 class ScoreBoardView {
+
     fun menu() : Int {
         var option: Int
         var input: String?
@@ -12,7 +17,7 @@ class ScoreBoardView {
         println()
         println("Enter an integer : ")
         input = readLine()!!
-        option = if (input.toIntOrNull() != null && !input.isEmpty())
+        option = if (input.toIntOrNull() != null && input.isNotEmpty())
             input.toInt()
         else
             -9
@@ -35,25 +40,34 @@ class ScoreBoardView {
         println("-- Time To Play --")
 
         if(playerScore.userName == System.getProperty("user.name")) {
-//            playAgain()
+            return false
         }
-        else {
-            playerScore.userName = System.getProperty("user.name")
-            print("${playerScore.userName} Enter yourScore: ")
-            var input = readLine()!!
 
-            playerScore.score = if (input.toIntOrNull() != null && !input.isEmpty())
-                input.toInt()
-            else
-                0
-        }
-        return playerScore.score.isNotEmpty() && playerScore.userName.isEmpty()
+        playerScore.userName = System.getProperty("user.name")
+        print("${playerScore.userName} Enter yourScore: ")
+        var input = readLine()!!
+
+        playerScore.score = if (input.toIntOrNull() != null && !input.isEmpty())
+            input.toInt()
+        else
+            0
+
+        return playerScore.score != null
     }
 
     fun updatePlayerScore(playerScore: ScoreModel) : Boolean {
 
-        var tempScore: Int?
+        if(playerScore != null) {
+            var input = readLine()!!
 
-        if (playerScore != null)
+            var tempScore = if (input.toIntOrNull() != null && !input.isEmpty())
+                input.toInt()
+            else
+                0
+
+            return true
+        }
+
+        return false
     }
 }
