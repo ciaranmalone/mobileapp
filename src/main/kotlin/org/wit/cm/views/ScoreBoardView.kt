@@ -25,7 +25,7 @@ class ScoreBoardView {
     }
 
     fun listScoreboards(playerScores: ScoreboardMemStore) {
-        println("--ALL SCORE--\n")
+        println("--ALL SCORE--")
         playerScores.logAll()
     }
 
