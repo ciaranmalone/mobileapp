@@ -8,7 +8,7 @@ import ScoreboardMemStore
 private val logger = KotlinLogging.logger {}
 
 val playerScores = ScoreboardMemStore()
-var playerScore = ScoreModel()
+val PlayerScore:ScoreModel = ScoreModel()
 val scoreBoardView = ScoreBoardView()
 
 fun main(args: Array<String>){
@@ -32,50 +32,33 @@ fun main(args: Array<String>){
     logger.info { "SHUTTING DOWN" }
 }
 
-
-
 fun playGame() {
-    println("-- Time To Play --")
-
-    var aPlayerScore:ScoreModel = ScoreModel()
-
-    if(scoreBoardView.addPlayerScore(aPlayerScore)) {
-        playerScores.create(aPlayerScore)
+    if(scoreBoardView.addPlayerScore(PlayerScore)) {
+        playerScores.create(PlayerScore)
     }
     else {
-        playAgain(aPlayerScore)
+        playAgain(PlayerScore)
     }
 }
 
-fun playAgain(playerScore:ScoreModel) {
-    println("Back Again?")
+fun playAgain(playerScore:ScoreModel? = ScoreModel()) {
 
-    var tempPlayerScore:ScoreModel = playerScore
+    if (playerScore != null) {
+        if(playerScore.userName.isEmpty())
+            playerScore.userName = System.getProperty("user.name")
 
-    if(tempPlayerScore == null) {
-        tempPlayerScore.userName = System.getProperty("user.name")
-    }
-
-    if (scoreBoardView.updatePlayerScore(tempPlayerScore)) {
-
-        oldPlayerScore.userName = System.getProperty("user.name")
-        print("${oldPlayerScore.userName} Enter yourScore: ")
-        var input = readLine()!!
-
-        oldPlayerScore.score = if (input.toIntOrNull() != null && !input.isEmpty())
-            input.toInt()
-        else
-            0
+        if(scoreBoardView.updatePlayerScore(playerScore)) {
+            playerScores.update(playerScore)
+        }
     }
 }
 
-fun search(userName: String) : ScoreModel? {
-    var foundUserScore: ScoreModel? = playerScores.findOne ( userName )
-        return foundUserScore
+fun search(userName: String): ScoreModel? {
+    return playerScores.findOne(userName)
 }
 
 fun scoreBoard() {
-    playerScores.findAll()
+    scoreBoardView.listScoreboards(playerScores)
 }
 
 fun dummyData() {

@@ -16,9 +16,10 @@ class ScoreboardMemStore : ScoreboardStore {
     }
 
     override fun create(playerScore: ScoreModel) {
-        playerScore.userName = System.getProperty("user.name")
+        if(playerScore.userName.isEmpty()) {
+            playerScore.userName = System.getProperty("user.name")
+        }
         playerScores.add(playerScore)
-        logAll()
     }
 
     override fun update(playerScore: ScoreModel) {

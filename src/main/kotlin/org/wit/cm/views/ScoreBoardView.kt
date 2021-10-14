@@ -57,10 +57,14 @@ class ScoreBoardView {
 
     fun updatePlayerScore(playerScore: ScoreModel) : Boolean {
 
+        println("Back Again?")
+
         if(playerScore != null) {
+
+            print("${playerScore.userName} Enter yourScore: ")
             var input = readLine()!!
 
-            var tempScore = if (input.toIntOrNull() != null && !input.isEmpty())
+            playerScore.score = if (input.toIntOrNull() != null && input.isNotEmpty())
                 input.toInt()
             else
                 0
