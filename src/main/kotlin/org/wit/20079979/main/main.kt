@@ -2,10 +2,11 @@ package org.wit.`20079979`
 
 import ScoreModel
 import mu.KotlinLogging
+import ScoreboardMemStore
 
 private val logger = KotlinLogging.logger {}
 
-var playerScores = ArrayList<ScoreModel>()
+val playerScores = ScoreboardMemStore()
 var playerScore = ScoreModel()
 
 
@@ -22,6 +23,7 @@ fun main(args: Array<String>){
             2 -> playAgain()
             3 -> scoreBoard()
             -1 -> exitApp()
+            -99 -> dummyData()
             else -> println("INVALID")
         }
         println()
@@ -68,7 +70,7 @@ fun playGame() {
         else
             0
 
-        playerScores.add(playerScore)
+        playerScores.create(playerScore)
     }
 }
 
@@ -91,12 +93,18 @@ fun playAgain() {
 }
 
 fun search(userName: String) : ScoreModel? {
-    var foundUserScore: ScoreModel? = playerScores.find { p -> p.userName == userName }
+    var foundUserScore: ScoreModel? = playerScores.findOne ( userName )
         return foundUserScore
 }
 
 fun scoreBoard() {
-    playerScores.forEach {logger.info("${it}")}
+    playerScores.findAll()
+}
+
+fun dummyData() {
+    playerScores.create( ScoreModel("Garry", 1))
+    playerScores.create(ScoreModel("Goose", 4))
+
 }
 
 fun exitApp() {
