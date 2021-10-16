@@ -11,15 +11,11 @@ import java.util.*
 
 private val logger = KotlinLogging.logger {}
 
-val JSON_FILE = "ScoreBoard.json"
-val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
-val listType = object : TypeToken<ArrayList<ScoreModel>>()
+const val JSON_FILE = "ScoreBoard.json"
+val gsonBuilder: Gson = GsonBuilder().setPrettyPrinting().create()
+val listType = object : TypeToken<ArrayList<ScoreModel>>() {}.type
 
-private fun generateRandomId(): Long {
-    return Random().nextLong()
-}
-
-class ScoreboardJSONStore: ScoreboardStore {
+class ScoreboardJSONStore : ScoreboardStore {
 
     var playerScores = mutableListOf<ScoreModel>()
 
@@ -43,6 +39,7 @@ class ScoreboardJSONStore: ScoreboardStore {
             playerScore.userName = System.getProperty("user.name")
         }
         playerScores.add(playerScore)
+        serialize()
     }
 
     override fun update(playerScore: ScoreModel) {
@@ -52,8 +49,12 @@ class ScoreboardJSONStore: ScoreboardStore {
         }
     }
 
+    override fun delete(playerScore: ScoreModel) {
+        TODO("Not yet implemented")
+    }
+
     internal fun logAll() {
-        playerScores.forEach {logger.info("${it}")}
+        playerScores.forEach {logger.info("$it")}
     }
 
     private fun serialize() {

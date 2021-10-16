@@ -2,6 +2,7 @@ package org.wit.cm.views
 
 import ScoreModel
 import ScoreboardMemStore
+import org.wit.cm.models.ScoreboardJSONStore
 
 class ScoreBoardView {
 
@@ -24,7 +25,7 @@ class ScoreBoardView {
         return option
     }
 
-    fun listScoreboards(playerScores: ScoreboardMemStore) {
+    fun listScoreboards(playerScores: ScoreboardJSONStore) {
         println("--ALL SCORE--")
         playerScores.logAll()
     }

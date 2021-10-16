@@ -29,6 +29,10 @@ class ScoreboardMemStore : ScoreboardStore {
         }
     }
 
+    override fun delete(playerScore: ScoreModel) {
+        TODO("Not yet implemented")
+    }
+
     internal fun logAll() {
         playerScores.forEach {logger.info("${it}")}
     }

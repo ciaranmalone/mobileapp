@@ -1,14 +1,14 @@
 package org.wit.cm
 
 import ScoreModel
-import ScoreboardMemStore
 import mu.KotlinLogging
+import org.wit.cm.models.ScoreboardJSONStore
 import org.wit.cm.views.ScoreBoardView
 
 
 private val logger = KotlinLogging.logger {}
 
-val playerScores = ScoreboardMemStore()
+val playerScores = ScoreboardJSONStore()
 val PlayerScore:ScoreModel = ScoreModel()
 val scoreBoardView = ScoreBoardView()
 
