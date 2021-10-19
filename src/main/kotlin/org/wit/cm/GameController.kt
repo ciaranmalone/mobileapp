@@ -4,17 +4,18 @@ import ScoreModel
 import mu.KotlinLogging
 import org.wit.cm.models.ScoreboardJSONStore
 import org.wit.cm.views.ScoreBoardView
+import java.text.DecimalFormat
 import kotlin.random.Random
 import kotlin.system.measureTimeMillis
 
 
 private val logger = KotlinLogging.logger {}
-
 val playerScores =  ScoreboardJSONStore()
-val PlayerScore:ScoreModel = ScoreModel()
 val scoreBoardView = ScoreBoardView()
 
 val words = listOf<String>("banana", "apple", "carrot", "grape")
+val df = DecimalFormat("#.####")
+
 
 class GameController{
 
@@ -30,8 +31,7 @@ class GameController{
             input = scoreBoardView.menu()
             when(input) {
                 1 -> playGame()
-                2 -> playAgain()
-                3 -> scoreBoard()
+                2 -> scoreBoard()
                 -1 -> exitApp()
                 -99 -> dummyData()
                 else -> println("INVALID")
@@ -43,6 +43,7 @@ class GameController{
     }
 
     private fun playGame() {
+        val playerScore:ScoreModel = ScoreModel()
 
         println("-- Time To Play --")
         val word = words[Random.nextInt(words.size)]
@@ -66,24 +67,33 @@ class GameController{
             }
         }
 
-        println("Time taken: $timeINMillis")
+        println("Time taken: ${df.format(timeINMillis/1000.0)}s")
+        println("Enter NAME: (3 LETTERS OR LESS)")
 
-        PlayerScore.userName = name
-        PlayerScore.score = timeINMillis
-        playerScores.create(PlayerScore)
+        var displayname =""
+        var incorrect = true
+        while (incorrect) {
 
+            displayname = readLine()!!
+            if (displayname.length <= 3){
+                incorrect = false
+            } else
+            {
+                println("NAME MUST BE 3 LETTERS OR LESS")
+            }
+        }
+
+        playerScore.displayName = displayname.toUpperCase()
+        playerScore.userName = name
+        playerScore.score = timeINMillis
+        playerScore.typedWord = word
+
+        playerScores.create(playerScore)
         playerScores.getRank(timeINMillis, name)
 
         println("You Ranked ${playerScores.getRank(timeINMillis, name)} place")
 
-        playerScores.logAll()
-
-//        if(scoreBoardView.addPlayerScore(PlayerScore)) {
-//            playerScores.create(PlayerScore)
-//        }
-//        else {
-//            playAgain(PlayerScore)
-//        }
+        playerScores.logTopTen()
     }
 
     private fun playAgain(playerScore:ScoreModel? = ScoreModel()) {
@@ -102,9 +112,8 @@ class GameController{
     }
 
     private fun dummyData() {
-        playerScores.create( ScoreModel("Garry", 1))
-        playerScores.create(ScoreModel("Goose", 4))
-
+        playerScores.create( ScoreModel("3213", "GGG", "Garry",  "carrot",123))
+        playerScores.create(ScoreModel("1234", "HHH", "Goose", "grape",122))
     }
 
     private fun exitApp() {

@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import mu.KotlinLogging
 import org.wit.cm.helper.*
+import java.text.DecimalFormat
 import java.util.*
 
 private val logger = KotlinLogging.logger {}
@@ -14,6 +15,9 @@ private val logger = KotlinLogging.logger {}
 const val JSON_FILE = "ScoreBoard.json"
 val gsonBuilder: Gson = GsonBuilder().setPrettyPrinting().create()
 val listType = object : TypeToken<ArrayList<ScoreModel>>() {}.type
+
+val df = DecimalFormat("#.####")
+
 
 class ScoreboardJSONStore : ScoreboardStore {
 
@@ -30,14 +34,15 @@ class ScoreboardJSONStore : ScoreboardStore {
     }
 
     override fun findOne(userName: String): ScoreModel? {
-        var foundPlayerScore: ScoreModel? = playerScores.find {p -> p.userName == userName}
-        return  foundPlayerScore
+        return playerScores.find { p -> p.userName == userName }
     }
 
     override fun create(playerScore: ScoreModel) {
         if(playerScore.userName.isEmpty()) {
             playerScore.userName = System.getProperty("user.name")
         }
+        playerScore.UUID = UUID.randomUUID().toString();
+
         playerScores.add(playerScore)
         serialize()
     }
@@ -55,12 +60,43 @@ class ScoreboardJSONStore : ScoreboardStore {
 
     internal fun logAll() {
         playerScores.sortBy { it.score }
-        playerScores.forEach {logger.info("$it")}
+        printScoreboard(playerScores)
+    }
+
+    internal fun logTopTen() {
+        this.playerScores.sortBy { it.score }
+        printScoreboard(this.playerScores.take(10))
+    }
+
+    internal fun showPlayer(name:String) {
+        printScoreboard(this.playerScores.filter { it.userName == name })
+    }
+
+    internal fun wordType(word:String) {
+        printScoreboard(this.playerScores.filter { it.typedWord == word })
+    }
+
+    private fun printScoreboard(playerScorePrint: List<ScoreModel>) {
+        if (playerScorePrint.isEmpty()) {
+            println("\n --Nothing to see here-- ")
+            return;
+        }
+
+        for ((index, value) in playerScorePrint.withIndex()){
+            println("#${index+1} ${value.displayName}  Score: ${df.format(value.score/1000.0)}s -> ${value.typedWord}")
+        }
+    }
+
+    internal  fun logFrom(start: Int) {
+        playerScores.sortBy { it.score }
+        for (start in start until playerScores.size) {
+                println("#${start+1} ${playerScores[start].displayName}  Score: ${df.format(playerScores[start].score/1000.0)}s ${playerScores[start].displayName}")
+        }
     }
 
     internal fun getRank(score:Long, userName:String): Int {
         playerScores.sortBy { it.score }
-        return playerScores.indexOfLast {it.score == score && it.userName == userName}
+        return playerScores.indexOfLast {it.score == score && it.userName == userName} +1
 
     }
 
