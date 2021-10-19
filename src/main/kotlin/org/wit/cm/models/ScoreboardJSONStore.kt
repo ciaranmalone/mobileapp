@@ -54,7 +54,14 @@ class ScoreboardJSONStore : ScoreboardStore {
     }
 
     internal fun logAll() {
+        playerScores.sortBy { it.score }
         playerScores.forEach {logger.info("$it")}
+    }
+
+    internal fun getRank(score:Long, userName:String): Int {
+        playerScores.sortBy { it.score }
+        return playerScores.indexOfLast {it.score == score && it.userName == userName}
+
     }
 
     private fun serialize() {

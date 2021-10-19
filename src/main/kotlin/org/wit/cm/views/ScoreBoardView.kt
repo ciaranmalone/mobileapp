@@ -48,10 +48,10 @@ class ScoreBoardView {
         print("${playerScore.userName} Enter yourScore: ")
         var input = readLine()!!
 
-        playerScore.score = if (input.toIntOrNull() != null && !input.isEmpty())
-            input.toInt()
-        else
-            0
+//        playerScore.score = if (input.toIntOrNull() != null && !input.isEmpty())
+//            input.toInt()
+//        else
+//            0
 
         return playerScore.score != null
     }
@@ -66,7 +66,7 @@ class ScoreBoardView {
             var input = readLine()!!
 
             playerScore.score = if (input.toIntOrNull() != null && input.isNotEmpty())
-                input.toInt()
+                input.toLong()
             else
                 0
 
