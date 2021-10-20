@@ -2,9 +2,12 @@ package org.wit.cm
 
 import ScoreModel
 import mu.KotlinLogging
+import org.wit.cm.helper.*
 import org.wit.cm.models.ScoreboardJSONStore
 import org.wit.cm.views.ScoreBoardView
 import java.text.DecimalFormat
+import java.util.*
+import kotlin.concurrent.schedule
 import kotlin.random.Random
 import kotlin.system.measureTimeMillis
 
@@ -16,6 +19,7 @@ val scoreBoardView = ScoreBoardView()
 val words = listOf<String>("banana", "apple", "carrot", "grape")
 val df = DecimalFormat("#.####")
 
+val timer = Timer("schedule", true)
 
 class GameController{
 
@@ -51,7 +55,21 @@ class GameController{
         val name = System.getProperty("user.name")?: "Player"
 
         println("$name type the word")
-        println(">>> $word <<<")
+
+        timer.schedule(1000) {
+            println(ANSI_RED+"3"+ANSI_RED)
+        }
+        timer.schedule(2000) {
+            println(ANSI_YELLOW+"2"+ANSI_YELLOW)
+        }
+        timer.schedule(3000) {
+            println(ANSI_GREEN+"1"+ANSI_GREEN)
+        }
+
+        timer.schedule(4000) {
+            println("$ANSI_PURPLE>>> $word <<<$ANSI_WHITE")
+        }
+
 
         val timeINMillis = measureTimeMillis {
             var input =""

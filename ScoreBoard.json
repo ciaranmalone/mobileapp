@@ -47,5 +47,19 @@
     "userName": "Goose",
     "typedWord": "grape",
     "score": 1332
+  },
+  {
+    "UUID": "bb3aa458-424e-4133-a9c5-88fa81e3bfe5",
+    "displayName": "DDD",
+    "userName": "crayon",
+    "typedWord": "grape",
+    "score": 5756
+  },
+  {
+    "UUID": "f05a6904-4852-4591-896c-0d9d987620a6",
+    "displayName": "CIA",
+    "userName": "crayon",
+    "typedWord": "apple",
+    "score": 6718
   }
 ]

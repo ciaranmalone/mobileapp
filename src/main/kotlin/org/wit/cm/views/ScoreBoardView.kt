@@ -1,4 +1,5 @@
 package org.wit.cm.views
+import org.wit.cm.helper.*
 import org.wit.cm.models.ScoreboardJSONStore
 
 val playerScores =  ScoreboardJSONStore()
@@ -8,7 +9,7 @@ class ScoreBoardView {
         var option: Int
         var input: String?
 
-        println("Main Menu")
+        println("$ANSI_BLUE Main Menu $ANSI_WHITE")
         println(" 1. Play!")
         println(" 2. List Scoreboard")
         println(" 3. Admin Panel")
@@ -28,7 +29,7 @@ class ScoreBoardView {
         var input: String?
 
         println("")
-        println("Score Menu Options: ")
+        println("$ANSI_BLUE Score Menu Options: $ANSI_WHITE")
         println(" 1. Search by user name")
         println(" 2. Search by word type")
         println(" 3. Search by display name")
@@ -119,7 +120,7 @@ class ScoreBoardView {
         var input: String?
 
         println("")
-        println("Score Menu Options: ")
+        println("$ANSI_BLUE Score Menu Options: $ANSI_WHITE")
         println(" 1. Update Player")
         println(" 2. Delete Player")
         println(" 3. List Full Info")
