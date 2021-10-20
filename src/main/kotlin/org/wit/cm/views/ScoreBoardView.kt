@@ -11,6 +11,7 @@ class ScoreBoardView {
         println("Main Menu")
         println(" 1. Play!")
         println(" 2. List Scoreboard")
+        println(" 3. Admin Panel")
         println("-1. Exit")
         println()
         println("Enter an integer : ")
