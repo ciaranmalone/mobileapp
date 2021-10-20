@@ -82,6 +82,7 @@ class ScoreBoardView {
         playerScores.wordType(input)
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     private fun showDisplayNameScore() {
         println("")
         println("type Display Name: ")
@@ -89,7 +90,7 @@ class ScoreBoardView {
         val input = readLine()!!
 
         println("\n $input's scores ")
-        playerScores.displayName(input)
+        playerScores.displayName(input.uppercase())
     }
 
 
