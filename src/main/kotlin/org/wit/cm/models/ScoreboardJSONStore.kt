@@ -32,7 +32,7 @@ class ScoreboardJSONStore : ScoreboardStore {
         return playerScores
     }
 
-    override fun findOne(userName: String): ScoreModel? {
+    private fun findOne(userName: String): ScoreModel? {
         return playerScores.find { p -> p.userName == userName }
     }
 
@@ -88,7 +88,7 @@ class ScoreboardJSONStore : ScoreboardStore {
             println("\n --Nothing to see here-- ")
             return;
         }
-
+        playerScorePrint.sortedBy { it.score }
         for ((index, value) in playerScorePrint.withIndex()){
             println("#${index+1} ${value.displayName}  Score: ${df.format(value.score/1000.0)}s -> ${value.typedWord}")
         }
@@ -128,11 +128,11 @@ class ScoreboardJSONStore : ScoreboardStore {
         playerScores = Gson().fromJson(jsonString, listType)
     }
 
-    internal fun find(id:String): ScoreModel? {
+    override fun find(id:String): ScoreModel? {
         return this.playerScores.find { it.UUID == id }
     }
 
-    internal fun printPlayerData(playerScore: ScoreModel) {
+    override fun printPlayerData(playerScore: ScoreModel) {
         println(println("${playerScore.userName} : ${playerScore.displayName}  Score: ${df.format(playerScore.score/1000.0)}s -> ${playerScore.typedWord}"))
     }
 }

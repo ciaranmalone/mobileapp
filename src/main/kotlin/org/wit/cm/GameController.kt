@@ -106,8 +106,10 @@ class GameController{
     }
 
     private fun dummyData() {
-        playerScores.create( ScoreModel("3213", "GGG", "Garry",  "carrot",123))
-        playerScores.create(ScoreModel("1234", "HHH", "Goose", "grape",122))
+        playerScores.create( ScoreModel("3213", "GGG", "Garry",  "carrot",2223))
+        playerScores.create(ScoreModel("1234", "HHH", "Goose", "grape",1222))
+        playerScores.create( ScoreModel("2222", "LOL", "Garry",  "carrot",2222))
+        playerScores.create(ScoreModel("3333", "GUY", "Goose", "grape",1332))
     }
 
     private fun exitApp() {
