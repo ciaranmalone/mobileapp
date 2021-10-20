@@ -32,6 +32,7 @@ class GameController{
             when(input) {
                 1 -> playGame()
                 2 -> scoreBoard()
+                3 -> adminPanel()
                 -1 -> exitApp()
                 -99 -> dummyData()
                 else -> println("INVALID")
@@ -96,15 +97,8 @@ class GameController{
         playerScores.logTopTen()
     }
 
-    private fun playAgain(playerScore:ScoreModel? = ScoreModel()) {
-        if (playerScore != null) {
-            if(playerScore.userName.isEmpty())
-                playerScore.userName = System.getProperty("user.name")
-
-            if(scoreBoardView.updatePlayerScore(playerScore)) {
-                playerScores.update(playerScore)
-            }
-        }
+    private fun adminPanel() {
+        scoreBoardView.listAdminOptions()
     }
 
     private fun scoreBoard() {

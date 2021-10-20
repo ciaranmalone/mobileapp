@@ -1,9 +1,6 @@
 package org.wit.cm.views
-
-import ScoreModel
-import ScoreboardMemStore
 import org.wit.cm.models.ScoreboardJSONStore
-import org.wit.cm.scoreBoardView
+
 val playerScores =  ScoreboardJSONStore()
 class ScoreBoardView {
 
@@ -25,6 +22,28 @@ class ScoreBoardView {
         return option
     }
 
+    private fun scoreMenu(): Int {
+        var option: Int
+        var input: String?
+
+        println("")
+        println("Score Menu Options: ")
+        println(" 1. Search by user name")
+        println(" 2. Search by word type")
+        println(" 3. Search by display name")
+        println("-1. Exit")
+        println()
+        println("Enter an integer : ")
+
+        input = readLine()!!
+
+        option = if (input.toIntOrNull() != null && input.isNotEmpty())
+            input.toInt()
+        else
+            -9
+        return option
+    }
+
     fun listScoreboards(playerScores: ScoreboardJSONStore) {
         println("--ALL SCORE--")
         playerScores.logAll()
@@ -34,6 +53,7 @@ class ScoreBoardView {
         when(input) {
             1 -> showPlayerScore()
             2 -> showWordTypeScore()
+            3 -> showDisplayNameScore()
             -1 -> print("back to menu")
             else -> println("INVALID")
         }
@@ -62,14 +82,45 @@ class ScoreBoardView {
         playerScores.wordType(input)
     }
 
-    private fun scoreMenu(): Int {
+    private fun showDisplayNameScore() {
+        println("")
+        println("type Display Name: ")
+
+        val input = readLine()!!
+
+        println("\n $input's scores ")
+        playerScores.displayName(input)
+    }
+
+
+
+    fun listAdminOptions() {
+        println("--ALL PLAYERS INFO--")
+        playerScores.logAll(true)
+
+        do {
+            var input = viewAdminOptions()
+            when(input) {
+                1 -> updatePlayerScore()
+                2 -> deletePlayer()
+                3 -> listFullData()
+                -1 -> print("back to menu")
+                else -> println("INVALID")
+            }
+            println()
+        } while (input != -1)
+
+    }
+
+    private fun viewAdminOptions(): Int {
         var option: Int
         var input: String?
 
         println("")
         println("Score Menu Options: ")
-        println(" 1. Search for Player")
-        println(" 2. Show my Score")
+        println(" 1. Update Player")
+        println(" 2. Delete Player")
+        println(" 3. List Full Info")
         println("-1. Exit")
         println()
         println("Enter an integer : ")
@@ -83,42 +134,54 @@ class ScoreBoardView {
         return option
     }
 
-    fun showPlayerScore(playerScore: ScoreModel) {
-        if (playerScore != null)
-            println("Score Detail: [$playerScore]")
-        else
-            print("Score not Found")
+    private fun listFullData() {
+        playerScores.logAll(true)
     }
 
-    fun addPlayerScore(playerScore: ScoreModel): Boolean {
-        println("-- Time To Play --")
+    private fun deletePlayer() {
+        println("")
+        println("type Player UUID: ")
 
-        if(playerScore.userName == System.getProperty("user.name")) {
-            return false
-        }
+        val input = readLine()!!
 
-        playerScore.userName = System.getProperty("user.name")
-        print("${playerScore.userName} Enter yourScore: ")
-        var input = readLine()!!
+        playerScores.delete(input)
 
-        return playerScore.score != null
+        println("User deleted")
     }
 
-    fun updatePlayerScore(playerScore: ScoreModel) : Boolean {
-        println("Back Again?")
-        if(playerScore != null) {
+    private fun updatePlayerScore()  {
+        println("")
+        println("type Player UUID: ")
 
-            print("${playerScore.userName} Enter yourScore: ")
-            var input = readLine()!!
+        val input = readLine()!!
 
-            playerScore.score = if (input.toIntOrNull() != null && input.isNotEmpty())
-                input.toLong()
-            else
-                0
+        var playerScore = playerScores.find(input)
 
-            return true
+        if (playerScore != null) {
+            println()
+            println("Player found:")
+            playerScores.printPlayerData(playerScore)
+
+            println(" Change ${playerScore.userName} to: ")
+            playerScore.userName = readLine()!!
+
+            println(" Change ${playerScore.displayName} to: ")
+            playerScore.displayName = readLine()!!
+
+            println(" Change ${playerScore.typedWord} to: ")
+            playerScore.typedWord = readLine()!!
+
+            println(" Change ${playerScore.score} to: ")
+
+            playerScore.score = readLine()!!.toLong()
+
+            println()
+            playerScores.printPlayerData(playerScore)
+
+            playerScores.update(playerScore)
+            println("Player updated")
+        } else {
+            println("Player does not exist")
         }
-
-        return false
     }
 }

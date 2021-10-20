@@ -3,5 +3,5 @@ interface ScoreboardStore {
     fun findOne(userName: String): ScoreModel?
     fun create(playerScore: ScoreModel)
     fun update(playerScore: ScoreModel)
-    fun delete(playerScore: ScoreModel)
+    fun delete(id:String)
 }

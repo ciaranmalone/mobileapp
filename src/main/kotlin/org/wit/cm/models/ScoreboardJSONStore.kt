@@ -18,7 +18,6 @@ val listType = object : TypeToken<ArrayList<ScoreModel>>() {}.type
 
 val df = DecimalFormat("#.####")
 
-
 class ScoreboardJSONStore : ScoreboardStore {
 
     var playerScores = mutableListOf<ScoreModel>()
@@ -54,13 +53,17 @@ class ScoreboardJSONStore : ScoreboardStore {
         }
     }
 
-    override fun delete(playerScore: ScoreModel) {
-        TODO("Not yet implemented")
+    override fun delete(id: String) {
+        this.playerScores.remove(this.playerScores.find { it.UUID == id })
     }
 
-    internal fun logAll() {
+    internal fun logAll(admin: Boolean =false) {
         playerScores.sortBy { it.score }
-        printScoreboard(playerScores)
+
+        if (admin)
+            printScoreboardAdmin(playerScores)
+        else
+            printScoreboard(playerScores)
     }
 
     internal fun logTopTen() {
@@ -76,6 +79,10 @@ class ScoreboardJSONStore : ScoreboardStore {
         printScoreboard(this.playerScores.filter { it.typedWord == word })
     }
 
+    internal fun displayName(word:String) {
+        printScoreboard(this.playerScores.filter { it.displayName == word })
+    }
+
     private fun printScoreboard(playerScorePrint: List<ScoreModel>) {
         if (playerScorePrint.isEmpty()) {
             println("\n --Nothing to see here-- ")
@@ -84,6 +91,17 @@ class ScoreboardJSONStore : ScoreboardStore {
 
         for ((index, value) in playerScorePrint.withIndex()){
             println("#${index+1} ${value.displayName}  Score: ${df.format(value.score/1000.0)}s -> ${value.typedWord}")
+        }
+    }
+
+    private fun printScoreboardAdmin(playerScorePrint: List<ScoreModel>) {
+        if (playerScorePrint.isEmpty()) {
+            println("\n --Nothing to see here-- ")
+            return;
+        }
+
+        for ((index, value) in playerScorePrint.withIndex()){
+            println("#${index+1} $value ")
         }
     }
 
@@ -108,5 +126,13 @@ class ScoreboardJSONStore : ScoreboardStore {
     private fun deserialize() {
         val jsonString = read(JSON_FILE)
         playerScores = Gson().fromJson(jsonString, listType)
+    }
+
+    internal fun find(id:String): ScoreModel? {
+        return this.playerScores.find { it.UUID == id }
+    }
+
+    internal fun printPlayerData(playerScore: ScoreModel) {
+        println(println("${playerScore.userName} : ${playerScore.displayName}  Score: ${df.format(playerScore.score/1000.0)}s -> ${playerScore.typedWord}"))
     }
 }
